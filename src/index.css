@@ -1,0 +1,16 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+  background-color: #e8e8e8;
+}
+
+.notes-wrapper {
+
+}
+
+.note {
+    border: 1px solid grey;
+    border-radius: 3px;
+    padding: 15px;
+    background-color: white;
+}

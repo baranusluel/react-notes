@@ -6,7 +6,7 @@ class NoteInput extends React.Component {
     render() {
         return (
             <div className="note-input">
-                <input type="text" onKeyPress={this.props.onKeyPress()}/>
+                <input type="text" onKeyPress={ this.props.onKeyPress() } />
             </div>
          );
     }
@@ -24,12 +24,17 @@ class Notes extends React.Component {
         this.state = {
             noteValues: []
         };
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     render() {
         return (
-            <div className="notes">
-                {this.renderNotes()}
+            <div className="notes-wrapper">
+                <NoteInput
+                    onKeyPress={ (event) => this.handleKeyPress } />
+                <div className="notes">
+                    {this.renderNotes()}
+                </div>
             </div>
         );
     }
@@ -38,34 +43,24 @@ class Notes extends React.Component {
         var out = [];
         for (let val of this.state.noteValues) {
             out.push(
-                <Note value={val}/>
+                <Note className="note" value={val}/>
             );
         }
         return out;
     }
-}
-
-class NotesApp extends React.Component {
-    render() {
-        return (
-            <div className="notes-wrapper">
-                <NoteInput
-                    onKeyPress={(event) => this.handleKeyPress}
-                />
-                <Notes/>
-            </div>
-        );
-    }
 
     handleKeyPress(event) {
-        if (event.key == "Enter") {
-            alert("submitted");
+        if (event.key === "Enter") {
+            let value = event.target.value;
+            this.setState(prevState => ({
+                noteValues: [...prevState.noteValues, value]
+            }));
         }
     }
 }
 
 ReactDOM.render(
-    <NotesApp />,
+    <Notes/>,
     document.getElementById('root')
 );
 
