@@ -5,16 +5,18 @@ import './index.css';
 class NoteInput extends React.Component {
     render() {
         return (
-            <div className="note-input">
-                <input type="text" onKeyPress={ this.props.onKeyPress() } />
+            <div className="note-input-wrapper">
+                <input type="text" className="note-input" autofocus="autofocus"
+                    onKeyPress={ this.props.onKeyPress() } />
             </div>
          );
     }
 }
 
+// Functional component that renders a single note
 function Note(props) {
     return (
-        <p className="note">{props.value}</p>
+        <div className="note">{props.value}</div>
     );
 }
 
@@ -22,11 +24,14 @@ class Notes extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            // State to keep track of notes added by user
             noteValues: []
         };
+        // Bind this to handleKeyPress so that this.state can be accessed
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
+    // Render the Notes root component
     render() {
         return (
             <div className="notes-wrapper">
@@ -39,6 +44,7 @@ class Notes extends React.Component {
         );
     }
 
+    // Renders every note from this.state.noteValues
     renderNotes() {
         var out = [];
         for (let val of this.state.noteValues) {
@@ -49,9 +55,12 @@ class Notes extends React.Component {
         return out;
     }
 
+    // Handles key events from the notes input box
     handleKeyPress(event) {
-        if (event.key === "Enter") {
+        if (event.key === "Enter") { // When user submits
             let value = event.target.value;
+            event.target.value = ""; // Clear input box
+            // Update state by pushing value onto array of notes
             this.setState(prevState => ({
                 noteValues: [...prevState.noteValues, value]
             }));
@@ -59,6 +68,7 @@ class Notes extends React.Component {
     }
 }
 
+// Render root component in DOM
 ReactDOM.render(
     <Notes/>,
     document.getElementById('root')
