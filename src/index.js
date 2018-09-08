@@ -3,50 +3,69 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class NoteInput extends React.Component {
-  render() {
-    return (
-      <div className="note-input">
-        <input type="text"/>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="note-input">
+                <input type="text" onKeyPress={this.props.onKeyPress()}/>
+            </div>
+         );
+    }
 }
 
-class Note extends React.Component {
-  render() {
+function Note(props) {
     return (
-      <p className="note">{this.props.value}</p>
+        <p className="note">{props.value}</p>
     );
-  }
 }
 
 class Notes extends React.Component {
-  renderNote(i) {
-    return <Note value={i}/>;
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            noteValues: []
+        };
+    }
 
-  render() {
-    return (
-      <div className="notes">
-        {this.renderNote(0)}
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="notes">
+                {this.renderNotes()}
+            </div>
+        );
+    }
+
+    renderNotes() {
+        var out = [];
+        for (let val of this.state.noteValues) {
+            out.push(
+                <Note value={val}/>
+            );
+        }
+        return out;
+    }
 }
 
 class NotesApp extends React.Component {
-  render() {
-    return (
-      <div className="notes-wrapper">
-        <NoteInput />
-        <Notes/>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="notes-wrapper">
+                <NoteInput
+                    onKeyPress={(event) => this.handleKeyPress}
+                />
+                <Notes/>
+            </div>
+        );
+    }
+
+    handleKeyPress(event) {
+        if (event.key == "Enter") {
+            alert("submitted");
+        }
+    }
 }
 
 ReactDOM.render(
-  <NotesApp />,
-  document.getElementById('root')
+    <NotesApp />,
+    document.getElementById('root')
 );
 
